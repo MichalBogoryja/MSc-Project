@@ -1,0 +1,1 @@
+function boxplot_avg = boxplot_avg_battery(no_data_sets,matrix,no_columns,argos)
