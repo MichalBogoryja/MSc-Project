@@ -1,5 +1,16 @@
 function boxplot_sth = boxplot_everything(matrix,no_columns)
 label_txt = '';
+% label_1 = strcat(label_txt,'5');
+% label_2 = strcat(label_txt,'10');
+% label_3 = strcat(label_txt,'15');
+% label_4 = strcat(label_txt,'20');
+% label_5 = strcat(label_txt,'25');
+% label_6 = strcat(label_txt,'30');
+% label_7 = strcat(label_txt,'35');
+% label_8 = strcat(label_txt,'40');
+% label_9 = strcat(label_txt,'45');
+% label_10 = strcat(label_txt,'50');
+
 label_1 = strcat(label_txt,'0.3');
 label_2 = strcat(label_txt,'0.4');
 label_3 = strcat(label_txt,'0.5');

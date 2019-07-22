@@ -65,6 +65,9 @@ for i = 1:no_sets
         case 15
             g1 = repmat({label_15},rows(15,1),1);
             g = [g; g1];
+        case 16
+            g1 = repmat({label_16},rows(16,1),1);
+            g = [g; g1];
     end 
 end
 box = boxplot(matrix,g);
