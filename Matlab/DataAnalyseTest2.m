@@ -1,4 +1,8 @@
 clear;
+
+results_a = [];
+results_b = [];
+
 batteries_avg = [];
 food_total = [];
 dead_total = [];
@@ -9,6 +13,8 @@ charging_total_met = [];
 charging_total_decision = [];
 charging_total_arriving = [];
 exploring_total = [];
+recharging_total = [];
+waiting_total = [];
 
 row_frequency_counter = [];
 row_met_counter = [];
@@ -16,7 +22,7 @@ row_decision_counter = [];
 row_arriving_counter = [];
 row_charging_counter = [];
 
-Label_X = ('RAB range ');
+Label_X = ('Algorithm ');
 
 Set = "set";
 %Sets for 'RAB range'
@@ -26,7 +32,13 @@ Set = "set";
 %SetName = {Set + '18',Set + '16',Set + '19',Set + '20',Set + '21',Set + '17',Set + '22',Set + '23',Set + '24',Set + '25'};
 
 %Sets for 'differnt algorithms'
-SetName = {Set + '1', Set + '16', Set + '26', Set + '27'};
+% SetName = {Set + '31', Set + '32', Set + '30', Set + '29', Set + '28', Set + '26', Set + '36', Set + '35', Set + '37',Set + '40',Set + '41'};
+
+SetName = {Set + '45',Set + '46'};
+%Sets for 'scalable tests'
+% SetName = {Set + '31', Set + '32'};
+
+% SetName = {Set + '45'};
     
 SetNumber = size(SetName,2);
 % SetNumber = 1;
@@ -45,9 +57,9 @@ for nn = 1:SetNumber
     dead_sub_total = [];
     FolderName = SetName{nn};
     DataSets = 10;
-    DataName ={FolderName + '/data1.txt',FolderName + '/data2.txt',FolderName + '/data3.txt',FolderName + '/data4.txt',FolderName + '/data5.txt',FolderName + '/data6.txt',FolderName + '/data7.txt',FolderName + '/data8.txt',FolderName + '/data9.txt',FolderName + '/data10.txt'};
+    DataName ={FolderName + '/data1.txt',FolderName + '/data2.txt',FolderName + '/data3.txt',FolderName + '/data4.txt',FolderName + '/data5.txt',FolderName + '/data6.txt',FolderName + '/data7.txt',FolderName + '/data8.txt',FolderName + '/data9.txt',FolderName + '/data10.txt',FolderName + '/data11.txt',FolderName + '/data12.txt',FolderName + '/data13.txt',FolderName + '/data14.txt',FolderName + '/data15.txt',FolderName + '/data16.txt',FolderName + '/data17.txt',FolderName + '/data18.txt',FolderName + '/data19.txt',FolderName + '/data20.txt',FolderName + '/data21.txt',FolderName + '/data22.txt',FolderName + '/data23.txt',FolderName + '/data24.txt',FolderName + '/data25.txt',FolderName + '/data26.txt',FolderName + '/data27.txt',FolderName + '/data28.txt',FolderName + '/data29.txt',FolderName + '/data30.txt'};
     BatteryFolderName = FolderName + "/battery_data";
-    BatteryDataName ={BatteryFolderName + '1.txt',BatteryFolderName + '2.txt',BatteryFolderName + '3.txt',BatteryFolderName + '4.txt',BatteryFolderName + '5.txt',BatteryFolderName + '6.txt',BatteryFolderName + '7.txt',BatteryFolderName + '8.txt',BatteryFolderName + '9.txt',BatteryFolderName + '10.txt'};
+    BatteryDataName ={BatteryFolderName + '1.txt',BatteryFolderName + '2.txt',BatteryFolderName + '3.txt',BatteryFolderName + '4.txt',BatteryFolderName + '5.txt',BatteryFolderName + '6.txt',BatteryFolderName + '7.txt',BatteryFolderName + '8.txt',BatteryFolderName + '9.txt',BatteryFolderName + '10.txt',BatteryFolderName + '11.txt',BatteryFolderName + '12.txt',BatteryFolderName + '13.txt',BatteryFolderName + '14.txt',BatteryFolderName + '15.txt',BatteryFolderName + '16.txt',BatteryFolderName + '17.txt',BatteryFolderName + '18.txt',BatteryFolderName + '19.txt',BatteryFolderName + '20.txt',BatteryFolderName + '21.txt',BatteryFolderName + '22.txt',BatteryFolderName + '23.txt',BatteryFolderName + '24.txt',BatteryFolderName + '25.txt',BatteryFolderName + '26.txt',BatteryFolderName + '27.txt',BatteryFolderName + '28.txt',BatteryFolderName + '29.txt',BatteryFolderName + '30.txt'};
     delimiterIn = ' ';
     headerlinesIn = 0;
     %A = importdata(filename,delimiterIn,headerlinesIn);
@@ -65,12 +77,12 @@ for nn = 1:SetNumber
     Argos_iterations = rowsA/DataSets;
     %caluculate mean battery level of all robots in particular moment 
     for i = 1:rowsA
-        A(i,(columnsA+1)) = mean(A(i,4:(columnsA-1)));   
+        A(i,(columnsA+1)) = mean(A(i,5:(columnsA-1)));   
     end
     
     %calculate number of completely discharged robots 
     for i = 1:rowsA
-       A(i,(columnsA+2)) = ((((A(1,2)+A(1,3))-(A(i,2)+A(i,3)))/(A(1,2)+A(1,3)))*100); 
+       A(i,(columnsA+2)) = ((((A(1,2)+A(1,3)+A(1,4))-(A(i,2)+A(i,3)+A(i,4)))/(A(1,2)+A(1,3)+A(1,4)))*100); 
     end
 
     avg_battery = [avg_battery; plot_avg(DataSets,A,columnsA,Argos_iterations,FolderName)];
@@ -80,6 +92,10 @@ for nn = 1:SetNumber
     food_sub_total = [food_sub_total; plot_food_items(DataSets,A,columnsA,Argos_iterations,FolderName)];
     
     plot_operating_robots(1,A,columnsA,Argos_iterations,FolderName)
+    
+    plot_charging_robots(1,A,columnsA,Argos_iterations,FolderName)
+    
+    plot_waiting_robots(1,A,columnsA,Argos_iterations,FolderName)
     
     dead_sub_total = [dead_sub_total; plot_dead_robots(DataSets,A,columnsA,Argos_iterations,FolderName)];
 
@@ -118,21 +134,27 @@ for nn = 1:SetNumber
     ylabel('Exploring robots [%]')
     saveas(gcf,fileName)
     
-    %plot boxplot how often robots recharge 
-%     for i = 1:DataSets
-%         edges = unique(B((battery_file_rows(i,1))+1:battery_file_rows(i+1,1),4));
-%         charging_sub_counts = [charging_sub_counts; histc(B((battery_file_rows(i,1))+1:battery_file_rows(i+1,1),4), edges)];
-%     end
-%     [charging_total_counts_rows,charging_total_counts_columns] = size(charging_total_counts);
-%     charging_total_counts(:,(charging_total_counts_columns+1)) = charging_sub_counts(:,1);
-%     subFileName = [FolderName + '/Charging frequency'];
-%     fileName = [subFileName + '.png'];
-%     boxplot_everything(charging_total_counts,charging_total_counts_columns);
-%     xlabel(Label_X)
-%     ylabel('Charging frequency')
-%     saveas(gcf,fileName)
+    %plot boxplot of recharging robots
+    [recharging_total_rows,recharging_total_columns] = size(recharging_total);
+    recharging_total(:,(exploring_total_columns+1)) = ((A(:,3)/A(1,2))*100);
+    subFileName = [FolderName + '/Recharging robots (boxplot)'];
+    fileName = [subFileName + '.png'];
+    boxplot_everything(recharging_total,recharging_total_columns);
+    xlabel(Label_X)
+    ylabel('Recharging robots [%]')
+    saveas(gcf,fileName)
     
-    %plot boxplot how often robots recharge NEW
+    %plot boxplot of waiting robots
+    [waiting_total_rows,waiting_total_columns] = size(waiting_total);
+    waiting_total(:,(waiting_total_columns+1)) = ((A(:,4)/A(1,2))*100);
+    subFileName = [FolderName + '/Waiting robots (boxplot)'];
+    fileName = [subFileName + '.png'];
+    boxplot_everything(waiting_total,waiting_total_columns);
+    xlabel(Label_X)
+    ylabel('Waiting robots [%]')
+    saveas(gcf,fileName)
+    
+    %plot boxplot how often robots recharge
     for i = 1:DataSets
         edges = unique(B((battery_file_rows(i,1))+1:battery_file_rows(i+1,1),4));
         charging_sub_counts = [charging_sub_counts; histc(B((battery_file_rows(i,1))+1:battery_file_rows(i+1,1),4), edges)];
@@ -201,4 +223,31 @@ for nn = 1:SetNumber
     ylabel('Percentage of completely discharged robots [%]')
     saveas(gcf,fileName)
     
+    switch nn
+        case 1
+            results_a = food_sub_total;
+%             results_a = charging_sub_counts;
+        case 2
+            results_b = food_sub_total;
+%             results_b = charging_sub_counts;
+    end    
+end
+
+logic_test = 1;
+
+if logic_test == 1
+    % % Wilcoxon rank-sum test (aka Mann-Whitney U test)
+    [p, h] = ranksum(results_a, results_b, 'alpha', 0.05)
+    
+    % 
+    % % Kolmogorov-Smirnoff test (aka KS test)
+    [h, p] = kstest2(results_a, results_b, 0.05)
+    % 
+    % % Varga-Delaney A test (aka Effect Magnitude test)
+    [p, h, st] = ranksum(results_a, results_b, 'alpha', 0.05);
+
+    N = size(results_a, 1);
+    M = size(results_b, 1);
+
+    A_result = (st.ranksum/N - (N+1)/2)/M
 end
